@@ -1,21 +1,21 @@
-import { Injectable, Inject } from "@nestjs/common";
-import { ClientProxy } from "@nestjs/microservices";
-import { map } from "rxjs/operators";
+import { Injectable, Inject } from '@nestjs/common';
+import { ClientProxy } from '@nestjs/microservices';
+import { map } from 'rxjs/operators';
 
 @Injectable()
 export class AppService {
   constructor(
-    @Inject("SERVICE_A") private readonly clientServiceA: ClientProxy
+    @Inject('CUSTOMER_SERVICE') private readonly customerService: ClientProxy,
   ) {}
 
-  pingServiceA() {
+  pingCustomerService() {
     const startTs = Date.now();
-    const pattern = { cmd: "ping" };
+    const pattern = { cmd: 'ping' };
     const payload = {};
-    return this.clientServiceA
+    return this.customerService
       .send<string>(pattern, payload)
       .pipe(
-        map((message: string) => ({ message, duration: Date.now() - startTs }))
+        map((message: string) => ({ message, duration: Date.now() - startTs })),
       );
   }
 }
