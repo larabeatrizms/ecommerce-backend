@@ -1,12 +1,21 @@
-import { Inject, Injectable } from '@nestjs/common';
+import {
+  Inject,
+  Injectable,
+  Logger,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { lastValueFrom } from 'rxjs';
 import { map, timeout } from 'rxjs/operators';
+import { SignInInterface } from './interfaces/signin.interface';
+import { UserInterface } from './interfaces/user.interface';
 
 export type User = any;
 
 @Injectable()
 export class UserService {
+  private readonly logger = new Logger(UserService.name);
+
   constructor(
     @Inject('USER_SERVICE')
     private readonly userClient: ClientProxy,
@@ -20,16 +29,48 @@ export class UserService {
     );
   }
 
-  async findOne(username: string): Promise<User | undefined> {
+  async signIn({
+    email,
+    password,
+  }: SignInInterface): Promise<User | undefined> {
+    try {
+      const source$ = this.userClient
+        .send(
+          { role: 'user', cmd: 'sign-in' },
+          {
+            email,
+            password,
+          },
+        )
+        .pipe(timeout(2000));
+
+      const result = await lastValueFrom(source$, {
+        defaultValue: 'User not found.',
+      });
+
+      if (!result || result.message) {
+        throw new UnauthorizedException(result.message);
+      }
+
+      return result;
+    } catch (error) {
+      this.logger.log(error);
+      throw error;
+    }
+  }
+
+  async createUser(user: UserInterface): Promise<User | undefined> {
     const source$ = this.userClient
-      .send({ role: 'user', cmd: 'find-one' }, { username })
+      .send({ role: 'user', cmd: 'create-user' }, user)
       .pipe(timeout(2000));
 
     const result = await lastValueFrom(source$, {
-      defaultValue: 'Usuário não encontrado!',
+      defaultValue: 'Could not create a user.',
     });
 
-    if (!result.userId) {
+    console.log('createUser result', result);
+
+    if (!result.id) {
       return null;
     }
 
