@@ -10,19 +10,19 @@ export class UserService {
     this.users = [
       {
         userId: 1,
-        userName: 'julia',
+        username: 'julia',
         password: 'changeme',
       },
       {
         userId: 2,
-        userName: 'john',
+        username: 'john',
         password: 'secret',
       },
     ];
   }
 
-  async findOne(userName: string): Promise<User | undefined> {
-    const user = this.users.find((user) => user.userName === userName);
+  async findOne(username: string): Promise<User | undefined> {
+    const user = this.users.find((user) => user.username === username);
 
     if (!user) {
       return new UnauthorizedException();
