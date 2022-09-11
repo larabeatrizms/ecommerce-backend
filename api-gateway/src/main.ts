@@ -10,10 +10,9 @@ async function bootstrap() {
 
   // Swagger configuration
   const config = new DocumentBuilder()
-    .setTitle('E-commerce API')
-    .setDescription('The e-commerce API documentation.')
+    .setTitle('Supermarket API')
+    .setDescription('The supermarket API documentation.')
     .setVersion('1.0.0')
-    .addTag('Customer')
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
