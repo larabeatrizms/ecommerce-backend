@@ -1,0 +1,15 @@
+{
+  "setupTasks": [],
+  "tasks": {
+    "api-gateway": {
+      "name": "Start API Gateway",
+      "command": "cd api-gateway && npm run start",
+      "runAtStart": false
+    },
+    "customer-service": {
+      "name": "Start Customer Service",
+      "command": "cd customer-service && npm run start",
+      "runAtStart": false
+    }
+  }
+}
