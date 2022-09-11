@@ -1,0 +1,26 @@
+version: '3'
+
+services:
+  api-gateway:
+    build:
+      context: ./api-gateway
+      dockerfile: Dockerfile
+    command: npm run start:dev
+    volumes:
+      - ./api-gateway:/usr/app/
+      - /usr/app/node_modules
+    ports:
+      - "3000:3000"
+    links:
+      - "customer:customer"
+      
+  customer:
+    build:
+      context: ./customer-service
+      dockerfile: Dockerfile
+    command: npm run start:dev
+    volumes:
+      - ./customer-service:/usr/app/
+      - /usr/app/node_modules
+    ports:
+      - "8888:8888"
