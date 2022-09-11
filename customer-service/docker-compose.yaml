@@ -1,0 +1,41 @@
+version: '3'
+
+services:
+  customer:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: npm run start:dev
+    volumes:
+      - .:/usr/app/
+      - /usr/app/node_modules
+    ports:
+      - "8888:8888"
+    expose:
+      - "8888"
+    environment:
+      PORT: 8888 
+    networks:
+      - app-net
+
+  postgres:
+    image: 'bitnami/postgresql'
+    restart: always
+    ports:
+      - '5432:5432'
+    environment:
+      - POSTGRESQL_USERNAME=docker
+      - POSTGRESQL_PASSWORD=docker
+      - POSTGRESQL_DATABASE=customer_db
+    volumes:
+      - 'postgresql_data:/bitnami/postgresql'
+    networks:
+      - app-net
+      
+networks:
+  app-net:
+    driver: bridge
+
+volumes:
+  postgresql_data:
+    driver: local
