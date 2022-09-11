@@ -1,4 +1,6 @@
 import {
+  BadRequestException,
+  HttpException,
   Inject,
   Injectable,
   Logger,
@@ -60,20 +62,23 @@ export class UserService {
   }
 
   async createUser(user: UserInterface): Promise<User | undefined> {
-    const source$ = this.userClient
-      .send({ role: 'user', cmd: 'create-user' }, user)
-      .pipe(timeout(2000));
+    try {
+      const source$ = this.userClient
+        .send({ role: 'user', cmd: 'create-user' }, user)
+        .pipe(timeout(2000));
 
-    const result = await lastValueFrom(source$, {
-      defaultValue: 'Could not create a user.',
-    });
+      const result = await lastValueFrom(source$, {
+        defaultValue: 'Could not create a user.',
+      });
 
-    console.log('createUser result', result);
+      if (!result || result.message) {
+        throw new BadRequestException(result.message);
+      }
 
-    if (!result.id) {
-      return null;
+      return result;
+    } catch (error) {
+      this.logger.log(error);
+      throw new BadRequestException(error);
     }
-
-    return result;
   }
 }

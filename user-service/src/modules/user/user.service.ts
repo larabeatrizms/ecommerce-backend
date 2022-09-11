@@ -6,6 +6,7 @@ import { compareSync } from 'bcrypt';
 import { User } from './entities/user.entity';
 import { SignInInterface } from './interfaces/signin.interface';
 import { UserInterface } from './interfaces/user.interface';
+import { RpcException } from '@nestjs/microservices';
 
 @Injectable()
 export class UserService {
@@ -32,17 +33,18 @@ export class UserService {
 
   async createUser(user: UserInterface): Promise<InsertResult> {
     try {
-      console.log('createUser user', user);
+      this.logger.log('Creating a user...');
+
       const userEntity = this.userRepository.create(user);
 
       const res = await this.userRepository.insert(userEntity);
 
-      this.logger.log('createUser - Created user');
+      this.logger.log(`User created! Email: ${user.email}`);
 
       return res;
-    } catch (e) {
-      this.logger.error(e);
-      throw e;
+    } catch (error) {
+      this.logger.error(error);
+      throw new RpcException(error?.message || error);
     }
   }
 }
