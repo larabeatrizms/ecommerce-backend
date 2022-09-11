@@ -16,7 +16,7 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
     );
 
     if (!customer) {
-      throw new UnauthorizedException('Teste');
+      throw new UnauthorizedException('Usuário não encontrado!');
     }
 
     return customer;

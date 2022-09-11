@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { HttpCode, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { lastValueFrom } from 'rxjs';
 import { map, timeout } from 'rxjs/operators';
@@ -24,12 +24,16 @@ export class CustomersService {
 
   async findOne(customerName: string): Promise<Customer | undefined> {
     const source$ = this.customersClient
-      .send<string>({ role: 'customer', cmd: 'find-one' }, { customerName })
+      .send({ role: 'customer', cmd: 'find-one' }, { customerName })
       .pipe(timeout(2000));
 
     const result = await lastValueFrom(source$, {
-      defaultValue: 'Usuário não encontrado',
+      defaultValue: 'Usuário não encontrado!',
     });
+
+    if (!result.customerId) {
+      return null;
+    }
 
     return result;
   }
