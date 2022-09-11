@@ -25,7 +25,11 @@ export class AuthService {
   async login(user: UserInterface) {
     return {
       user_id: user.id,
-      access_token: this.jwtService.sign({ email: user.email, sub: user.id }),
+      access_token: this.jwtService.sign({
+        firstName: user.firstName,
+        email: user.email,
+        sub: user.id,
+      }),
     };
   }
 }
