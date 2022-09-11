@@ -16,6 +16,6 @@ async function bootstrap() {
 
   await app.listen();
 
-  logger.log('Customer Service is listening', 'Initialization');
+  logger.log('User Service is listening', 'Initialization');
 }
 bootstrap();
