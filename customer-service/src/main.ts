@@ -14,8 +14,7 @@ async function bootstrap() {
     },
   });
 
-  console.log(Number(process.env.PORT));
-  app.listen();
+  await app.listen();
 
   logger.log('Customer Service is listening', 'Initialization');
 }
