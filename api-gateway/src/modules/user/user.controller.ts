@@ -2,7 +2,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { Body, Controller, Get, Post } from '@nestjs/common';
 
 import { UserService } from './user.service';
-import { UserInterface } from './interfaces/user.interface';
+import { CreateUserDto } from './dtos/createUser.dto';
 
 @ApiTags('User')
 @Controller('user')
@@ -15,7 +15,7 @@ export class UserController {
   }
 
   @Post()
-  createUser(@Body() user: UserInterface) {
+  createUser(@Body() user: CreateUserDto) {
     return this.userService.createUser(user);
   }
 }

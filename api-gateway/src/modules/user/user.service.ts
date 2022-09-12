@@ -1,6 +1,5 @@
 import {
   BadRequestException,
-  HttpException,
   Inject,
   Injectable,
   Logger,
@@ -9,8 +8,8 @@ import {
 import { ClientProxy } from '@nestjs/microservices';
 import { lastValueFrom } from 'rxjs';
 import { map, timeout } from 'rxjs/operators';
+import { CreateUserDto } from './dtos/createUser.dto';
 import { SignInInterface } from './interfaces/signin.interface';
-import { UserInterface } from './interfaces/user.interface';
 
 export type User = any;
 
@@ -61,7 +60,7 @@ export class UserService {
     }
   }
 
-  async createUser(user: UserInterface): Promise<User | undefined> {
+  async createUser(user: CreateUserDto): Promise<User | undefined> {
     try {
       const source$ = this.userClient
         .send({ role: 'user', cmd: 'create-user' }, user)
