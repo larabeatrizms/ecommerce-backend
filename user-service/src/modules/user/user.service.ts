@@ -35,6 +35,16 @@ export class UserService {
     try {
       this.logger.log('Creating a user...');
 
+      this.logger.log('Validating fields...');
+
+      const userAlreadyCreated = await this.userRepository.findOneBy({
+        email: user.email,
+      });
+
+      if (userAlreadyCreated) {
+        throw new RpcException('Este e-mail já está cadastrado.');
+      }
+
       const userEntity = this.userRepository.create(user);
 
       const res = await this.userRepository.insert(userEntity);
