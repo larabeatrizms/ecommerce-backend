@@ -17,14 +17,13 @@ export class ShowUserService {
     try {
       this.logger.log(`Searching user... id: ${id}`);
 
-      console.log({ id });
-
       const user = await this.userRepository.findOneWithRelations({
         where: {
           id,
         },
         relations: {
           addresses: true,
+          payments: true,
         },
       });
 

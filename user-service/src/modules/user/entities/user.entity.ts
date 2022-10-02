@@ -10,6 +10,7 @@ import {
 } from 'typeorm';
 import { hash } from 'bcryptjs';
 import { UserAddress } from './user-address.entity';
+import { UserPayment } from './user-payment.entity';
 
 @Entity()
 @Unique(['email'])
@@ -31,6 +32,9 @@ export class User {
 
   @OneToMany(() => UserAddress, (address) => address.user)
   addresses: UserAddress[];
+
+  @OneToMany(() => UserPayment, (payment) => payment.user)
+  payments: UserPayment[];
 
   @CreateDateColumn({
     name: 'created_at',

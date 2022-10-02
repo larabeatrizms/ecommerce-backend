@@ -71,6 +71,9 @@ export class CreateUserService {
       return {
         success: true,
         message: 'User created!',
+        details: {
+          user_id: user.id,
+        },
       };
     } catch (error) {
       this.logger.error(error, error.stack);
