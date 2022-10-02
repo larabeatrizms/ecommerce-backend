@@ -6,10 +6,11 @@ import {
   UpdateDateColumn,
   BeforeInsert,
   Unique,
+  OneToMany,
 } from 'typeorm';
 import { hash } from 'bcryptjs';
 import { IsEmail, IsString, Min } from 'class-validator';
-import { UserInterface } from '../interfaces/user.interface';
+import { UserAddress } from './user-address.entity';
 
 @Entity()
 @Unique(['email'])
@@ -33,6 +34,9 @@ export class User {
   @Column()
   @IsEmail()
   email: string;
+
+  @OneToMany(() => UserAddress, (address) => address.user)
+  addresses: UserAddress[];
 
   @CreateDateColumn({
     name: 'created_at',

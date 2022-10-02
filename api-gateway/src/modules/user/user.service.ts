@@ -9,6 +9,7 @@ import { ClientProxy } from '@nestjs/microservices';
 import { lastValueFrom } from 'rxjs';
 import { map, timeout } from 'rxjs/operators';
 import { CreateUserDto } from './dtos/create-user.dto';
+import { ShowUserDto } from './dtos/show-user.dto';
 import { SignInInterface } from './interfaces/signin.interface';
 
 export type User = any;
@@ -68,6 +69,32 @@ export class UserService {
 
       const result = await lastValueFrom(source$, {
         defaultValue: 'Could not create a user.',
+      });
+
+      if (!result || result.status === 'error') {
+        throw new BadRequestException(result.message);
+      }
+
+      return result;
+    } catch (error) {
+      this.logger.log(error);
+      throw new BadRequestException(error);
+    }
+  }
+
+  async showUser({ id }: ShowUserDto): Promise<User | undefined> {
+    try {
+      const source$ = this.userClient
+        .send(
+          { role: 'user', cmd: 'show-user' },
+          {
+            id: Number(id),
+          },
+        )
+        .pipe(timeout(2000));
+
+      const result = await lastValueFrom(source$, {
+        defaultValue: 'Could not find a user.',
       });
 
       if (!result || result.status === 'error') {

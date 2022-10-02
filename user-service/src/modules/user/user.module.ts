@@ -11,12 +11,14 @@ import { UserAddressRepository } from './repositories/user-address.repository';
 
 import { User } from './entities/user.entity';
 import { UserAddress } from './entities/user-address.entity';
+import { ShowUserService } from './services/show-user.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([User, UserAddress])],
   providers: [
     SignInService,
     CreateUserService,
+    ShowUserService,
     {
       provide: 'UserRepositoryInterface',
       useClass: UserRepository,

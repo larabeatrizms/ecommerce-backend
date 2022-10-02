@@ -5,7 +5,7 @@ class UserAddress {
   street: string;
 
   @ApiProperty()
-  postal_code: string;
+  postalCode: string;
 
   @ApiProperty()
   number: number;

@@ -20,8 +20,12 @@ export abstract class BaseAbstractRepository<T>
     return await this.entity.findOneById(id);
   }
 
-  public async findByCondition(filterCondition: any): Promise<T> {
+  public async findOneByCondition(filterCondition: any): Promise<T> {
     return await this.entity.findOne({ where: filterCondition });
+  }
+
+  public async findOneWithRelations(relations: any): Promise<T> {
+    return await this.entity.findOne(relations);
   }
 
   public async findWithRelations(relations: any): Promise<T[]> {

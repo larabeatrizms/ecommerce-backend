@@ -13,10 +13,10 @@ export class SignInService {
     private readonly userRepository: UserRepositoryInterface,
   ) {}
 
-  async signIn({ email, password }: SignInInterface): Promise<User | Error> {
+  async execute({ email, password }: SignInInterface): Promise<User | Error> {
     this.logger.log(`Searching user... email: ${email}`);
 
-    const user = await this.userRepository.findByCondition({ email });
+    const user = await this.userRepository.findOneByCondition({ email });
 
     if (!user) {
       this.logger.log('User not found.');
