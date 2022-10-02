@@ -3,12 +3,14 @@ import { UserService } from '../user/user.service';
 import { JwtService } from '@nestjs/jwt';
 import { UserInterface } from '../user/interfaces/user.interface';
 import { ForgotPasswordDto } from './dtos/forgot-password.dto';
+import { MailService } from 'src/shared/mail/mail.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly usersService: UserService,
-    private readonly jwtService: JwtService, // private readonly mailService: MailService,
+    private readonly jwtService: JwtService,
+    private readonly mailService: MailService,
   ) {}
 
   async validateUser(email: string, password: string): Promise<any> {
@@ -39,18 +41,6 @@ export class AuthService {
 
     const token = await this.login(user);
 
-    const forgotLink = `http://localhost:3000/auth/change-password?token=${token.access_token}`;
-
-    console.log({ forgotLink });
-
-    // await this.mailService.send({
-    //   from: this.configService.get<string>('JS_CODE_MAIL'),
-    //   to: user.email,
-    //   subject: 'Forgot Password',
-    //   html: `
-    //         <h3>Hello ${user.firstName}!</h3>
-    //         <p>Please use this <a href="${forgotLink}">link</a> to reset your password.</p>
-    //     `,
-    // });
+    await this.mailService.sendForgotPassword(user, token.access_token);
   }
 }
