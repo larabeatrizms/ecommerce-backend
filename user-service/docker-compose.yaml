@@ -9,12 +9,14 @@ services:
     volumes:
       - .:/usr/app/
       - /usr/app/node_modules
-    ports:
-      - "8888:8888"
     expose:
-      - "8888"
+      - 8888
+    ports:
+      - "8888:8888/tcp"
     environment:
       PORT: 8888 
+    depends_on:
+      - postgres
     networks:
       - app-net
 

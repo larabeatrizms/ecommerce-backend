@@ -5,22 +5,53 @@ services:
     build:
       context: ./api-gateway
       dockerfile: Dockerfile
-    command: npm run start:dev
+      network: host
+    command: npm run start:prod
     volumes:
       - ./api-gateway:/usr/app/
       - /usr/app/node_modules
     ports:
-      - "3000:3000"
-    links:
-      - "customer:customer"
-      
-  customer:
+      - 3000:3000
+    environment:
+      PORT: 3000 
+    networks:
+      - app-net
+  user:
     build:
-      context: ./customer-service
+      context: ./user-service
       dockerfile: Dockerfile
+      network: host
     command: npm run start:dev
     volumes:
-      - ./customer-service:/usr/app/
+      - ./user-service:/usr/app/
       - /usr/app/node_modules
     ports:
-      - "8888:8888"
+      - '8888:8888'
+    environment:
+      PORT: 8888 
+    depends_on:
+      - postgres
+    networks:
+      - app-net
+
+  postgres:
+    image: 'bitnami/postgresql'
+    restart: always
+    ports:
+      - '5432:5432'
+    environment:
+      - POSTGRESQL_USERNAME=docker
+      - POSTGRESQL_PASSWORD=docker
+      - POSTGRESQL_DATABASE=user_db
+    volumes:
+      - 'postgresql_data:/bitnami/postgresql'
+    networks:
+      - app-net
+      
+networks:
+  app-net:
+    driver: bridge
+
+volumes:
+  postgresql_data:
+    driver: local
