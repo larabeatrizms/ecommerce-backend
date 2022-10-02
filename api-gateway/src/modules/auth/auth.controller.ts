@@ -13,6 +13,7 @@ import { AuthService } from './auth.service';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { SignInDto } from './dtos/signin.dto';
+import { ForgotPasswordDto } from './dtos/forgot-password.dto';
 
 @ApiTags('Auth')
 @Controller()
@@ -31,6 +32,11 @@ export class AuthController {
   @Post('auth/login')
   async login(@Request() req, @Body() signInDto: SignInDto) {
     return this.authService.login(req.user);
+  }
+
+  @Post('auth/forgot-password')
+  async forgotPassword(@Body() forgotPasswordDto: ForgotPasswordDto) {
+    return this.authService.forgotPassword(forgotPasswordDto);
   }
 
   @ApiBearerAuth()
