@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  Put,
   UseGuards,
 } from '@nestjs/common';
 
@@ -14,6 +15,10 @@ import { CreateUserDto } from './dtos/create-user.dto';
 import { ShowUserDto } from './dtos/show-user.dto';
 import { UpdateUserDto } from './dtos/update-user-profile.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import {
+  UpdateUserAddressBodyDto,
+  UpdateUserAddressParamDto,
+} from './dtos/update-user-address.dto';
 
 @ApiTags('User')
 @Controller('user')
@@ -43,12 +48,22 @@ export class UserController {
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Editar perfil de um usuário.' })
   updateUserProfile(
-    @Param() params: Pick<UpdateUserDto, 'id'>,
-    @Body() body: Omit<UpdateUserDto, 'id'>,
+    @Param() params: Pick<UpdateUserDto, 'user_id'>,
+    @Body() body: Omit<UpdateUserDto, 'user_id'>,
   ) {
     return this.userService.updateUserProfile({
       ...params,
       ...body,
     });
+  }
+
+  @Put('/address/:id')
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({ summary: 'Editar perfil de um usuário.' })
+  updateUserAddress(
+    @Param() params: UpdateUserAddressParamDto,
+    @Body() body: UpdateUserAddressBodyDto,
+  ) {
+    return this.userService.updateUserAddress(params, body);
   }
 }

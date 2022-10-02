@@ -10,6 +10,10 @@ import { lastValueFrom } from 'rxjs';
 import { map, timeout } from 'rxjs/operators';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { ShowUserDto } from './dtos/show-user.dto';
+import {
+  UpdateUserAddressBodyDto,
+  UpdateUserAddressParamDto,
+} from './dtos/update-user-address.dto';
 import { UpdateUserDto } from './dtos/update-user-profile.dto';
 import { SignInInterface } from './interfaces/signin.interface';
 
@@ -109,10 +113,46 @@ export class UserService {
     }
   }
 
-  async updateUserProfile(data: UpdateUserDto): Promise<User | undefined> {
+  async updateUserProfile({
+    user_id,
+    ...data
+  }: UpdateUserDto): Promise<User | undefined> {
     try {
       const source$ = this.userClient
-        .send({ role: 'user', cmd: 'update-user-profile' }, data)
+        .send(
+          { role: 'user', cmd: 'update-user-profile' },
+          { id: user_id, ...data },
+        )
+        .pipe(timeout(2000));
+
+      const result = await lastValueFrom(source$, {
+        defaultValue: 'Could not find a user.',
+      });
+
+      if (!result || result.status === 'error') {
+        throw new BadRequestException(result.message);
+      }
+
+      return result;
+    } catch (error) {
+      this.logger.log(error);
+      throw new BadRequestException(error);
+    }
+  }
+
+  async updateUserAddress(
+    { address_id }: UpdateUserAddressParamDto,
+    data: UpdateUserAddressBodyDto,
+  ): Promise<User | undefined> {
+    try {
+      const source$ = this.userClient
+        .send(
+          { role: 'user', cmd: 'update-user-address' },
+          {
+            id: address_id,
+            ...data,
+          },
+        )
         .pipe(timeout(2000));
 
       const result = await lastValueFrom(source$, {

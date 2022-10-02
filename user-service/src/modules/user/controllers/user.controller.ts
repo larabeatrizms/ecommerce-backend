@@ -6,8 +6,10 @@ import { CreateUserService } from '../services/create-user.service';
 import { SignInService } from '../services/sign-in.service';
 import { ShowUserService } from '../services/show-user.service';
 import { IShowUser } from '../dtos/show-user.interface';
-import { IUpdateUser } from '../dtos/update-user-profile.interface';
+import { IUpdateUserProfile } from '../dtos/update-user-profile.interface';
 import { UpdateUserProfileService } from '../services/update-user-profile.service';
+import { IUpdateUserAddress } from '../dtos/update-user-address.interface';
+import { UpdateUserAddressService } from '../services/update-user-address.service';
 
 @Controller()
 export class UserController {
@@ -16,6 +18,7 @@ export class UserController {
     private readonly createUserService: CreateUserService,
     private readonly showUserService: ShowUserService,
     private readonly updateUserProfileService: UpdateUserProfileService,
+    private readonly updateUserAddressService: UpdateUserAddressService,
   ) {}
 
   @MessagePattern({ role: 'user', cmd: 'sign-in' })
@@ -37,7 +40,12 @@ export class UserController {
   }
 
   @MessagePattern({ role: 'user', cmd: 'update-user-profile' })
-  updateUserProfile(data: IUpdateUser) {
+  updateUserProfile(data: IUpdateUserProfile) {
     return this.updateUserProfileService.execute(data);
+  }
+
+  @MessagePattern({ role: 'user', cmd: 'update-user-address' })
+  updateUserAddress(data: IUpdateUserAddress) {
+    return this.updateUserAddressService.execute(data);
   }
 }

@@ -3,7 +3,7 @@ import { Inject, Logger } from '@nestjs/common';
 import { RpcException } from '@nestjs/microservices';
 import { ISuccessResponse } from 'src/shared/interfaces/SuccessResponse.interface';
 import { UserRepositoryInterface } from '../repositories/user/user.interface.repository';
-import { IUpdateUser } from '../dtos/update-user-profile.interface';
+import { IUpdateUserProfile } from '../dtos/update-user-profile.interface';
 
 export class UpdateUserProfileService {
   private readonly logger = new Logger(UpdateUserProfileService.name);
@@ -13,7 +13,7 @@ export class UpdateUserProfileService {
     private readonly userRepository: UserRepositoryInterface,
   ) {}
 
-  async execute(data: IUpdateUser): Promise<ISuccessResponse | Error> {
+  async execute(data: IUpdateUserProfile): Promise<ISuccessResponse | Error> {
     try {
       this.logger.log('Updating a user...');
 
