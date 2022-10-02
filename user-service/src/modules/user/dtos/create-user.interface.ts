@@ -13,7 +13,4 @@ export interface CreateUserInterface {
     neighborhood: string;
     complement?: string;
   };
-  payment: {
-    type: 'ON_CASH_DELIVERY';
-  };
 }

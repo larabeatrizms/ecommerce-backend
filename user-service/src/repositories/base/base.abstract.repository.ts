@@ -11,9 +11,15 @@ export abstract class BaseAbstractRepository<T>
   }
 
   public async create(data: T): Promise<T> {
-    const created = this.entity.create(data);
+    const create = this.entity.create(data);
 
-    return await this.entity.save(created);
+    return await this.entity.save(create);
+  }
+
+  public async createMany(data: T[]): Promise<T[]> {
+    const creates = data.map((value) => this.entity.create(value));
+
+    return await this.entity.save(creates);
   }
 
   public async findOneById(id: number): Promise<T> {

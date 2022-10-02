@@ -3,6 +3,8 @@ import { DeleteResult } from 'typeorm';
 export interface BaseInterfaceRepository<T> {
   create(data: T | any): Promise<T>;
 
+  createMany(data: T[] | any[]): Promise<T[]>;
+
   findOneById(id: number): Promise<T>;
 
   findOneByCondition(filterCondition: any): Promise<T>;

@@ -3,18 +3,20 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { UserController } from './controllers/user.controller';
 
-import { CreateUserService } from './services/create-user.service';
 import { SignInService } from './services/sign-in.service';
+import { ShowUserService } from './services/show-user.service';
+import { CreateUserService } from './services/create-user.service';
 
-import { UserRepository } from './repositories/user.repository';
-import { UserAddressRepository } from './repositories/user-address.repository';
+import { UserPaymentRepository } from './repositories/user-payment/user-payment.repository';
+import { UserAddressRepository } from './repositories/user-address/user-address.repository';
+import { UserRepository } from './repositories/user/user.repository';
 
 import { User } from './entities/user.entity';
 import { UserAddress } from './entities/user-address.entity';
-import { ShowUserService } from './services/show-user.service';
+import { UserPayment } from './entities/user-payment.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User, UserAddress])],
+  imports: [TypeOrmModule.forFeature([User, UserAddress, UserPayment])],
   providers: [
     SignInService,
     CreateUserService,
@@ -26,6 +28,10 @@ import { ShowUserService } from './services/show-user.service';
     {
       provide: 'UserAddressRepositoryInterface',
       useClass: UserAddressRepository,
+    },
+    {
+      provide: 'UserPaymentRepositoryInterface',
+      useClass: UserPaymentRepository,
     },
   ],
   controllers: [UserController],

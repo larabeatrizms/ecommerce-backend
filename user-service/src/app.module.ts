@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { AppController } from './app.controller';
 import { UserAddress } from './modules/user/entities/user-address.entity';
+import { UserPayment } from './modules/user/entities/user-payment.entity';
 import { User } from './modules/user/entities/user.entity';
 import { UserModule } from './modules/user/user.module';
 
@@ -18,7 +19,7 @@ import { UserModule } from './modules/user/user.module';
       username: 'docker',
       password: 'docker',
       database: 'user_db',
-      entities: [User, UserAddress],
+      entities: [User, UserAddress, UserPayment],
       synchronize: true,
     }),
   ],
