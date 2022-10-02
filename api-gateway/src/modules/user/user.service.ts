@@ -14,6 +14,7 @@ import {
   UpdateUserAddressBodyDto,
   UpdateUserAddressParamDto,
 } from './dtos/update-user-address.dto';
+import { UpdateUserPasswordDto } from './dtos/update-user-password.dto';
 import { UpdateUserDto } from './dtos/update-user-profile.dto';
 import { SignInInterface } from './interfaces/signin.interface';
 
@@ -34,6 +35,27 @@ export class UserService {
       timeout(5000),
       map((message) => ({ message, duration: Date.now() - startTs })),
     );
+  }
+
+  async findByEmail(email: string): Promise<User | undefined> {
+    try {
+      const source$ = this.userClient
+        .send({ role: 'user', cmd: 'find-by-email' }, { email })
+        .pipe(timeout(2000));
+
+      const result = await lastValueFrom(source$, {
+        defaultValue: 'User not found.',
+      });
+
+      if (!result || result.message) {
+        throw new UnauthorizedException(result.message);
+      }
+
+      return result;
+    } catch (error) {
+      this.logger.log(error);
+      throw error;
+    }
   }
 
   async signIn({
@@ -122,6 +144,36 @@ export class UserService {
         .send(
           { role: 'user', cmd: 'update-user-profile' },
           { id: user_id, ...data },
+        )
+        .pipe(timeout(2000));
+
+      const result = await lastValueFrom(source$, {
+        defaultValue: 'Could not find a user.',
+      });
+
+      if (!result || result.status === 'error') {
+        throw new BadRequestException(result.message);
+      }
+
+      return result;
+    } catch (error) {
+      this.logger.log(error);
+      throw new BadRequestException(error);
+    }
+  }
+
+  async updateUserPassword(
+    user_id: string,
+    data: UpdateUserPasswordDto,
+  ): Promise<User | undefined> {
+    try {
+      const source$ = this.userClient
+        .send(
+          { role: 'user', cmd: 'update-user-password' },
+          {
+            id: user_id,
+            ...data,
+          },
         )
         .pipe(timeout(2000));
 

@@ -22,7 +22,7 @@ export abstract class BaseAbstractRepository<T>
     return await this.entity.save(creates);
   }
 
-  public async update(data: T | any): Promise<T> {
+  public async update(data: T): Promise<T> {
     return await this.entity.save(data);
   }
 

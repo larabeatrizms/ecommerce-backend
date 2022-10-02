@@ -8,6 +8,7 @@ import {
   Post,
   Put,
   UseGuards,
+  Request,
 } from '@nestjs/common';
 
 import { UserService } from './user.service';
@@ -19,6 +20,7 @@ import {
   UpdateUserAddressBodyDto,
   UpdateUserAddressParamDto,
 } from './dtos/update-user-address.dto';
+import { UpdateUserPasswordDto } from './dtos/update-user-password.dto';
 
 @ApiTags('User')
 @Controller('user')
@@ -59,11 +61,21 @@ export class UserController {
 
   @Put('/address/:id')
   @UseGuards(JwtAuthGuard)
-  @ApiOperation({ summary: 'Editar perfil de um usuário.' })
+  @ApiOperation({ summary: 'Editar endereço de um usuário.' })
   updateUserAddress(
     @Param() params: UpdateUserAddressParamDto,
     @Body() body: UpdateUserAddressBodyDto,
   ) {
     return this.userService.updateUserAddress(params, body);
+  }
+
+  @Patch('/password')
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({ summary: 'Editar a senha de um usuário.' })
+  async updateUserPassword(
+    @Request() req,
+    @Body() body: UpdateUserPasswordDto,
+  ): Promise<boolean> {
+    return this.userService.updateUserPassword(req.user.userId, body);
   }
 }
