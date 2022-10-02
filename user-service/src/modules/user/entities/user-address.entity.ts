@@ -18,16 +18,16 @@ export class UserAddress {
   @Column()
   user_id: number;
 
-  @ManyToOne(() => User)
+  @ManyToOne(() => User, (user) => user.addresses)
   @JoinColumn({ name: 'user_id' })
   user: User;
 
   @Column()
   street: string;
 
-  @Column()
+  @Column({ name: 'postal_code' })
   @Matches(/^[0-9]{5}-[0-9]{3}$/)
-  postal_code: string;
+  postalCode: string;
 
   @Column()
   @IsNumber()

@@ -5,8 +5,6 @@ import { RpcException } from '@nestjs/microservices';
 import { ISuccessResponse } from 'src/shared/interfaces/SuccessResponse.interface';
 import { UserRepositoryInterface } from '../repositories/user.interface.repository';
 import { UserAddressRepositoryInterface } from '../repositories/user-address.interface.repository';
-import { validate } from 'class-validator';
-import { User } from '../entities/user.entity';
 
 export class CreateUserService {
   private readonly logger = new Logger(CreateUserService.name);
@@ -18,9 +16,7 @@ export class CreateUserService {
     private readonly userAddressRepository: UserAddressRepositoryInterface,
   ) {}
 
-  async createUser(
-    data: CreateUserInterface,
-  ): Promise<ISuccessResponse | Error> {
+  async execute(data: CreateUserInterface): Promise<ISuccessResponse | Error> {
     try {
       this.logger.log('Creating a user...');
 
@@ -28,7 +24,7 @@ export class CreateUserService {
 
       this.logger.log('Validating fields...');
 
-      const userAlreadyCreated = await this.userRepository.findByCondition({
+      const userAlreadyCreated = await this.userRepository.findOneByCondition({
         email: userData.email,
       });
 
@@ -54,7 +50,7 @@ export class CreateUserService {
         message: 'User created!',
       };
     } catch (error) {
-      this.logger.error(error);
+      this.logger.error(error, error.stack);
       throw new RpcException(error?.message || error);
     }
   }

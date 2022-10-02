@@ -6,7 +6,7 @@ export interface CreateUserInterface {
   email: string;
   address: {
     street: string;
-    postal_code: string;
+    postalCode: string;
     number: number;
     city: string;
     state: string;
