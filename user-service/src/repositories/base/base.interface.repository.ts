@@ -5,6 +5,8 @@ export interface BaseInterfaceRepository<T> {
 
   createMany(data: T[] | any[]): Promise<T[]>;
 
+  update(data: T | any): Promise<T>;
+
   findOneById(id: number): Promise<T>;
 
   findOneByCondition(filterCondition: any): Promise<T>;

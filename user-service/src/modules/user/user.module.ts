@@ -14,6 +14,7 @@ import { UserRepository } from './repositories/user/user.repository';
 import { User } from './entities/user.entity';
 import { UserAddress } from './entities/user-address.entity';
 import { UserPayment } from './entities/user-payment.entity';
+import { UpdateUserProfileService } from './services/update-user-profile.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([User, UserAddress, UserPayment])],
@@ -21,6 +22,7 @@ import { UserPayment } from './entities/user-payment.entity';
     SignInService,
     CreateUserService,
     ShowUserService,
+    UpdateUserProfileService,
     {
       provide: 'UserRepositoryInterface',
       useClass: UserRepository,

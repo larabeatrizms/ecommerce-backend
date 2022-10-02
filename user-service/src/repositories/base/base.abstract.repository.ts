@@ -22,6 +22,10 @@ export abstract class BaseAbstractRepository<T>
     return await this.entity.save(creates);
   }
 
+  public async update(data: T | any): Promise<T> {
+    return await this.entity.save(data);
+  }
+
   public async findOneById(id: number): Promise<T> {
     return await this.entity.findOneById(id);
   }

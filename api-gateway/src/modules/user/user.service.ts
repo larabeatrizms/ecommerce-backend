@@ -10,6 +10,7 @@ import { lastValueFrom } from 'rxjs';
 import { map, timeout } from 'rxjs/operators';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { ShowUserDto } from './dtos/show-user.dto';
+import { UpdateUserDto } from './dtos/update-user-profile.dto';
 import { SignInInterface } from './interfaces/signin.interface';
 
 export type User = any;
@@ -91,6 +92,27 @@ export class UserService {
             id: Number(id),
           },
         )
+        .pipe(timeout(2000));
+
+      const result = await lastValueFrom(source$, {
+        defaultValue: 'Could not find a user.',
+      });
+
+      if (!result || result.status === 'error') {
+        throw new BadRequestException(result.message);
+      }
+
+      return result;
+    } catch (error) {
+      this.logger.log(error);
+      throw new BadRequestException(error);
+    }
+  }
+
+  async updateUserProfile(data: UpdateUserDto): Promise<User | undefined> {
+    try {
+      const source$ = this.userClient
+        .send({ role: 'user', cmd: 'update-user-profile' }, data)
         .pipe(timeout(2000));
 
       const result = await lastValueFrom(source$, {
