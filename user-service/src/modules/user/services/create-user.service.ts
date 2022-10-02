@@ -3,8 +3,8 @@ import { Inject, Logger } from '@nestjs/common';
 import { CreateUserInterface } from '../dtos/create-user.interface';
 import { RpcException } from '@nestjs/microservices';
 import { ISuccessResponse } from 'src/shared/interfaces/SuccessResponse.interface';
-import { UserRepositoryInterface } from '../repositories/user.interface.repository';
-import { UserAddressRepositoryInterface } from '../repositories/user-address.interface.repository';
+import { UserRepositoryInterface } from '../repositories/user/user.interface.repository';
+import { UserAddressRepositoryInterface } from '../repositories/user-address/user-address.interface.repository';
 
 export class CreateUserService {
   private readonly logger = new Logger(CreateUserService.name);

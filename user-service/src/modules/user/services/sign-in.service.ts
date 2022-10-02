@@ -3,7 +3,7 @@ import { compareSync } from 'bcryptjs';
 
 import { User } from '../entities/user.entity';
 import { SignInInterface } from '../dtos/sign-in.interface';
-import { UserRepositoryInterface } from '../repositories/user.interface.repository';
+import { UserRepositoryInterface } from '../repositories/user/user.interface.repository';
 
 export class SignInService {
   private readonly logger = new Logger(SignInService.name);

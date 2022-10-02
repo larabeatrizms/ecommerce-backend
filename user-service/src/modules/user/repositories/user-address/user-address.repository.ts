@@ -2,8 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BaseAbstractRepository } from 'src/repositories/base/base.abstract.repository';
-import { UserAddress } from '../entities/user-address.entity';
 import { UserAddressRepositoryInterface } from './user-address.interface.repository';
+import { UserAddress } from '../../entities/user-address.entity';
 
 @Injectable()
 export class UserAddressRepository

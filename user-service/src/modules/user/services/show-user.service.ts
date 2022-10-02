@@ -1,7 +1,7 @@
 import { Inject, Logger } from '@nestjs/common';
 
 import { RpcException } from '@nestjs/microservices';
-import { UserRepositoryInterface } from '../repositories/user.interface.repository';
+import { UserRepositoryInterface } from '../repositories/user/user.interface.repository';
 import { IShowUser } from '../dtos/show-user.interface';
 import { User } from '../entities/user.entity';
 
