@@ -7,7 +7,7 @@ import {
   BeforeInsert,
   Unique,
 } from 'typeorm';
-import { hash } from 'bcrypt';
+import { hash } from 'bcryptjs';
 import { IsEmail, Min } from 'class-validator';
 import { UserInterface } from '../interfaces/user.interface';
 

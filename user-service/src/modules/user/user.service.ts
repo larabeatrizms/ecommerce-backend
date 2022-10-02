@@ -1,7 +1,7 @@
 import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, InsertResult } from 'typeorm';
-import { compareSync } from 'bcrypt';
+import { compareSync } from 'bcryptjs';
 
 import { User } from './entities/user.entity';
 import { SignInInterface } from './interfaces/signin.interface';
