@@ -9,11 +9,11 @@ import {
 } from 'typeorm';
 import { hash } from 'bcryptjs';
 import { IsEmail, Min } from 'class-validator';
-import { UserInterface } from '../interfaces/user.interface';
+import { CreateUserInterface } from '../interfaces/create-user.interface';
 
 @Entity()
 @Unique(['email'])
-export class User implements UserInterface {
+export class User implements CreateUserInterface {
   @PrimaryGeneratedColumn()
   id: number;
 

@@ -70,7 +70,7 @@ export class UserService {
         defaultValue: 'Could not create a user.',
       });
 
-      if (!result || result.message) {
+      if (!result || result.status === 'error') {
         throw new BadRequestException(result.message);
       }
 

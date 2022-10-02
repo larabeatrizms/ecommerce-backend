@@ -1,25 +1,27 @@
 import { Controller } from '@nestjs/common';
 import { MessagePattern } from '@nestjs/microservices';
-import { SignInInterface } from './interfaces/signin.interface';
-import { UserInterface } from './interfaces/user.interface';
-import { UserService } from './user.service';
+import { SignInInterface } from './interfaces/sign-in.interface';
+import { CreateUserInterface } from './interfaces/create-user.interface';
+import { CreateUserService } from './services/create-user.service';
+import { SignInService } from './services/sign-in.service';
 
 @Controller()
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly signInService: SignInService,
+    private readonly createUserService: CreateUserService,
+  ) {}
 
   @MessagePattern({ role: 'user', cmd: 'sign-in' })
   signIn({ email, password }: SignInInterface) {
-    console.log('signIn');
-    return this.userService.signIn({
+    return this.signInService.signIn({
       email,
       password,
     });
   }
 
   @MessagePattern({ role: 'user', cmd: 'create-user' })
-  createUser(user: UserInterface) {
-    console.log('createUser');
-    return this.userService.createUser(user);
+  createUser(user: CreateUserInterface) {
+    return this.createUserService.createUser(user);
   }
 }
