@@ -4,35 +4,51 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
-  BeforeInsert,
-  Unique,
+  JoinColumn,
+  ManyToOne,
 } from 'typeorm';
-import { hash } from 'bcryptjs';
-import { IsEmail, IsString, Min } from 'class-validator';
-import { UserInterface } from '../interfaces/user.interface';
+import { IsNumber, IsOptional, IsString, Matches } from 'class-validator';
+import { User } from './user.entity';
 
 @Entity()
-@Unique(['email'])
-export class User {
+export class UserAddress {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column()
-  @Min(8)
-  @IsString()
-  password: string;
+  user_id: number;
 
-  @Column({ name: 'first_name' })
-  @IsString()
-  firstName: string;
-
-  @Column({ name: 'last_name' })
-  @IsString()
-  lastName: string;
+  @ManyToOne(() => User)
+  @JoinColumn({ name: 'user_id' })
+  user: User;
 
   @Column()
-  @IsEmail()
-  email: string;
+  street: string;
+
+  @Column()
+  @Matches(/^[0-9]{5}-[0-9]{3}$/)
+  postal_code: string;
+
+  @Column()
+  @IsNumber()
+  number: number;
+
+  @Column()
+  @IsString()
+  city: string;
+
+  @Column()
+  @IsString()
+  state: string;
+
+  @Column()
+  @IsString()
+  neighborhood: string;
+
+  @Column()
+  @IsOptional()
+  @IsString()
+  complement?: string;
 
   @CreateDateColumn({
     name: 'created_at',
@@ -49,9 +65,4 @@ export class User {
     onUpdate: 'CURRENT_TIMESTAMP(6)',
   })
   updatedAt: Date;
-
-  @BeforeInsert()
-  async hashPassword() {
-    this.password = await hash(this.password, 10);
-  }
 }

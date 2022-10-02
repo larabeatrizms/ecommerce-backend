@@ -2,7 +2,7 @@ import { Inject, Logger, UnauthorizedException } from '@nestjs/common';
 import { compareSync } from 'bcryptjs';
 
 import { User } from '../entities/user.entity';
-import { SignInInterface } from '../interfaces/sign-in.interface';
+import { SignInInterface } from '../dtos/sign-in.interface';
 import { UserRepositoryInterface } from '../repositories/user.interface.repository';
 
 export class SignInService {

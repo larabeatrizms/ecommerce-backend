@@ -1,9 +1,9 @@
 import { Controller } from '@nestjs/common';
 import { MessagePattern } from '@nestjs/microservices';
-import { SignInInterface } from './interfaces/sign-in.interface';
-import { CreateUserInterface } from './interfaces/create-user.interface';
-import { CreateUserService } from './services/create-user.service';
-import { SignInService } from './services/sign-in.service';
+import { SignInInterface } from '../dtos/sign-in.interface';
+import { CreateUserInterface } from '../dtos/create-user.interface';
+import { CreateUserService } from '../services/create-user.service';
+import { SignInService } from '../services/sign-in.service';
 
 @Controller()
 export class UserController {
