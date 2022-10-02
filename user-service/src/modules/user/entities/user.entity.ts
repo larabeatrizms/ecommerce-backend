@@ -9,7 +9,6 @@ import {
   OneToMany,
 } from 'typeorm';
 import { hash } from 'bcryptjs';
-import { IsEmail, IsString, Min } from 'class-validator';
 import { UserAddress } from './user-address.entity';
 
 @Entity()
@@ -19,20 +18,15 @@ export class User {
   id: number;
 
   @Column()
-  @Min(8)
-  @IsString()
   password: string;
 
   @Column({ name: 'first_name' })
-  @IsString()
   firstName: string;
 
   @Column({ name: 'last_name' })
-  @IsString()
   lastName: string;
 
   @Column()
-  @IsEmail()
   email: string;
 
   @OneToMany(() => UserAddress, (address) => address.user)

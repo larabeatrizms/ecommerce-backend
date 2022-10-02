@@ -21,7 +21,7 @@ export class UserController {
   }
 
   @Get('/:id')
-  showUser(@Param('id') id: number) {
-    return this.userService.showUser({ id });
+  showUser(@Param() data: ShowUserDto) {
+    return this.userService.showUser(data);
   }
 }
