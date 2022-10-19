@@ -30,6 +30,9 @@ export class User {
   @Column()
   email: string;
 
+  @Column({ default: false })
+  isAdmin: boolean;
+
   @OneToMany(() => UserAddress, (address) => address.user)
   addresses: UserAddress[];
 
