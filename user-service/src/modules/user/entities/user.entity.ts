@@ -6,19 +6,19 @@ import {
   UpdateDateColumn,
   BeforeInsert,
   Unique,
+  OneToMany,
 } from 'typeorm';
-import { hash } from 'bcrypt';
-import { IsEmail, Min } from 'class-validator';
-import { UserInterface } from '../interfaces/user.interface';
+import { hash } from 'bcryptjs';
+import { UserAddress } from './user-address.entity';
+import { UserPayment } from './user-payment.entity';
 
 @Entity()
 @Unique(['email'])
-export class User implements UserInterface {
+export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column()
-  @Min(8)
   password: string;
 
   @Column({ name: 'first_name' })
@@ -28,10 +28,19 @@ export class User implements UserInterface {
   lastName: string;
 
   @Column()
-  @IsEmail()
   email: string;
 
+  @Column({ default: false })
+  isAdmin: boolean;
+
+  @OneToMany(() => UserAddress, (address) => address.user)
+  addresses: UserAddress[];
+
+  @OneToMany(() => UserPayment, (payment) => payment.user)
+  payments: UserPayment[];
+
   @CreateDateColumn({
+    name: 'created_at',
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP(6)',
   })
@@ -39,6 +48,7 @@ export class User implements UserInterface {
 
   @Column()
   @UpdateDateColumn({
+    name: 'updated_at',
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP(6)',
     onUpdate: 'CURRENT_TIMESTAMP(6)',
