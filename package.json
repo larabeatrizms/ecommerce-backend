@@ -4,7 +4,7 @@
   "description": "Este projeto foi construído com o objetivo de estruturar uma arquitetura de microserviços para supermercados. Respeitando à medida do possível os princípios de construção de arquitetura de microserviços.",
   "main": "index.js",
   "scripts": {
-    "postinstall": "if [ $API_GATEWAY_ENV ]; then npm run postinstall-api-gateway; elif [ $USER_SERVICE_ENV ]; then npm run postinstall-user-service; elif [ $PRODUCT_SERVICE_ENV ]; then npm run postinstall-product-service; else echo no environment detected, please set CLIENT_ENV or SERVER_ENV; fi",
+    "postinstall": "if [ $API_GATEWAY_ENV ]; then npm run postinstall-api-gateway; elif [ $USER_SERVICE_ENV ]; then npm run postinstall-user-service; elif [ $PRODUCT_SERVICE_ENV ]; then npm run postinstall-product-service; else echo no environment detected, please set one; fi",
     "postinstall-api-gateway": "cd api-gateway && npm install && npm run build",
     "postinstall-user-service": "cd user-service && npm install && npm run build",
     "postinstall-product-service": "cd product-service && npm install && npm run build"
