@@ -1,3 +1,4 @@
+import { Category } from 'src/modules/category/entities/category.entity';
 import {
   Entity,
   Column,
@@ -5,7 +6,11 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   Unique,
+  OneToMany,
+  ManyToOne,
+  JoinColumn,
 } from 'typeorm';
+import { ProductPricingHistory } from './product-pricing-history.entity';
 
 @Entity()
 @Unique(['sku'])
@@ -23,7 +28,25 @@ export class Product {
   description: string;
 
   @Column()
+  image: string;
+
+  @Column({
+    type: 'float',
+  })
   price: number;
+
+  @Column()
+  category_id: number;
+
+  @ManyToOne(() => Category, (category) => category.products)
+  @JoinColumn({ name: 'category_id' })
+  category: Category;
+
+  @OneToMany(
+    () => ProductPricingHistory,
+    (productPricingHistory) => productPricingHistory.product,
+  )
+  pricingHistory: ProductPricingHistory[];
 
   @CreateDateColumn({
     name: 'created_at',

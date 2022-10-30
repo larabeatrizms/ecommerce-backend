@@ -1,14 +1,40 @@
 import { Controller } from '@nestjs/common';
 import { MessagePattern } from '@nestjs/microservices';
-import { CreateProductInterface } from '../dtos/create-product.interface';
-import { CreateProductService } from '../services/create-product.service';
 
+import { CreateProductDto } from '../dtos/create-product.dto';
+import { FindProductByIdDto } from '../dtos/find-product-by-id.dto';
+import { FindProductsByFieldsDto } from '../dtos/find-products-by-fields.dto';
+import { UpdateProductDto } from '../dtos/update-product.dto';
+import { CreateProductService } from '../services/create-product.service';
+import { FindProductByIdService } from '../services/find-product-by-id.service';
+import { FindProductsByFieldsService } from '../services/find-products-by-fields.service';
+import { UpdateProductService } from '../services/update-product.service';
 @Controller()
 export class ProductController {
-  constructor(private readonly createProductService: CreateProductService) {}
+  constructor(
+    private readonly createProductService: CreateProductService,
+    private readonly updateProductService: UpdateProductService,
+    private readonly findProductByIdService: FindProductByIdService,
+    private readonly findProductsByFieldsService: FindProductsByFieldsService,
+  ) {}
 
   @MessagePattern({ role: 'product', cmd: 'create-product' })
-  create(data: CreateProductInterface) {
+  create(data: CreateProductDto) {
     return this.createProductService.execute(data);
+  }
+
+  @MessagePattern({ role: 'product', cmd: 'update-product' })
+  update(data: UpdateProductDto) {
+    return this.updateProductService.execute(data);
+  }
+
+  @MessagePattern({ role: 'product', cmd: 'find-product-by-id' })
+  findProductById(data: FindProductByIdDto) {
+    return this.findProductByIdService.execute(data.id);
+  }
+
+  @MessagePattern({ role: 'product', cmd: 'find-products-by-fields' })
+  findProductsByFields(data: FindProductsByFieldsDto) {
+    return this.findProductsByFieldsService.execute(data);
   }
 }
