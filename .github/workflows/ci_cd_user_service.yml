@@ -16,7 +16,7 @@ on:
 env:
   REGISTRY: gcr.io
   IMAGE_NAME: starlit-vim-367103/user_service
-  SERVICE: user_service
+  SERVICE: user-service
   REGION: us-central1
 
 
