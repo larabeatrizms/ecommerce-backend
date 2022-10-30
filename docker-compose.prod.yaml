@@ -1,60 +1,14 @@
-version: '3'
+version: '3.8'
 
 services:
   api_gateway:
-    build:
+    build: 
       context: ./api-gateway
       dockerfile: Dockerfile.prod
       target: ${STAGE:-testing}
+    ports:
+      - 3000:3000
     volumes:
       - ./api-gateway:/home/node/app
       - /home/node/app/dist
       - /home/node/app/node_modules
-    ports:
-      - 3000:3000
-    environment:
-      PORT: 3000
-  # user-service:
-  #   build:
-  #     context: ./user-service
-  #     dockerfile: Dockerfile.prod
-  #     target: ${STAGE:-testing}
-  #   volumes:
-  #     - ./user-service:/home/node/app
-  #     - /home/node/app/dist
-  #     - /home/node/app/node_modules
-  #   ports:
-  #     - '8080:8080'
-  #   environment:
-  #     PORT: 8080 
-  #     HOST: localhost 
-  #     DB_NAME: user_db 
-  #     DB_HOST: localhost 
-  #     DB_PORT: 5432 
-  #     DB_USERNAME: docker 
-  #     DB_PASSWORD: docker 
-  #   depends_on:
-  #     - postgres
-  #   networks:
-  #     - app-net
-  # postgres_user:
-  #   image: 'bitnami/postgresql'
-  #   restart: always
-  #   ports:
-  #     - '5432:5432'
-  #   environment:
-  #     - POSTGRESQL_USERNAME=docker
-  #     - POSTGRESQL_PASSWORD=docker
-  #     - POSTGRESQL_DATABASE=user_db
-  #   volumes:
-  #     - 'postgresql_data:/bitnami/postgresql'
-  #   networks:
-  #     - app-net
-      
-# networks:
-#   app-net:
-#     driver: bridge
-
-# volumes:
-#   postgresql_data:
-#     driver: local
