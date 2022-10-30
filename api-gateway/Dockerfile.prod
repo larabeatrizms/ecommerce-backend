@@ -6,10 +6,10 @@ RUN mkdir -p /home/node/app
 
 WORKDIR /home/node/app
 
-COPY --chown=node:node api-gateway/package.json api-gateway/package-lock.json ./
+COPY --chown=node:node package.json package-lock.json ./
 RUN npm ci
 
-COPY --chown=node:node api-gateway .
+COPY --chown=node:node . .
 
 RUN npm run build
 

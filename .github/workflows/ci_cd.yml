@@ -71,7 +71,7 @@ jobs:
         id: build-for-testing
         uses: docker/build-push-action@ac9327eae2b366085ac7f6a2d02df8aa8ead720a
         with:
-          context: .
+          context: ./api-gateway
           file: ./api-gateway/Dockerfile.prod
           push: false
           target: testing
@@ -95,7 +95,7 @@ jobs:
         uses: docker/build-push-action@ac9327eae2b366085ac7f6a2d02df8aa8ead720a
         if: ${{ github.event_name != 'pull_request' }}
         with:
-          context: .
+          context: ./api-gateway
           file: ./api-gateway/Dockerfile.prod
           target: production
           push: true
