@@ -9,9 +9,8 @@ WORKDIR /home/node/app
 COPY --chown=node:node api-gateway/package.json api-gateway/package-lock.json ./
 RUN npm ci
 
-COPY --chown=node:node . .
+COPY --chown=node:node api-gateway .
 
-RUN cd api-gateway
 RUN npm run build
 
 ENV NODE_ENV=prod
