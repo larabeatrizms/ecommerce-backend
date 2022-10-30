@@ -12,3 +12,6 @@ services:
       - ./api-gateway:/home/node/app
       - /home/node/app/dist
       - /home/node/app/node_modules
+    environment:
+      PORT: 3000 
+      JWT_KEY: secret_key_test 

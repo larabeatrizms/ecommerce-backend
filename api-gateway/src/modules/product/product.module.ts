@@ -10,7 +10,7 @@ import { ProductService } from './product.service';
         name: 'PRODUCT_SERVICE',
         transport: Transport.TCP,
         options: {
-          host: process.env.PRODUCT_SERVICE_HOST,
+          host: process.env.PRODUCT_SERVICE_HOST || 'localhost',
           port: 8081,
         },
       },
