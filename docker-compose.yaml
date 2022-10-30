@@ -4,54 +4,57 @@ services:
   api-gateway:
     build:
       context: ./api-gateway
-      dockerfile: Dockerfile
-      network: host
-    command: npm run start:prod
+      dockerfile: Dockerfile.prod
+      target: ${STAGE:-testing}
     volumes:
-      - ./api-gateway:/usr/app/
-      - /usr/app/node_modules
+      - ./api-gateway:/home/node/app
+      - /home/node/app/dist
+      - /home/node/app/node_modules
     ports:
       - 3000:3000
     environment:
-      PORT: 3000 
-    networks:
-      - app-net
-  user:
-    build:
-      context: ./user-service
-      dockerfile: Dockerfile
-      network: host
-    command: npm run start:dev
-    volumes:
-      - ./user-service:/usr/app/
-      - /usr/app/node_modules
-    ports:
-      - '8888:8888'
-    environment:
-      PORT: 8888 
-    depends_on:
-      - postgres
-    networks:
-      - app-net
-
-  postgres:
-    image: 'bitnami/postgresql'
-    restart: always
-    ports:
-      - '5432:5432'
-    environment:
-      - POSTGRESQL_USERNAME=docker
-      - POSTGRESQL_PASSWORD=docker
-      - POSTGRESQL_DATABASE=user_db
-    volumes:
-      - 'postgresql_data:/bitnami/postgresql'
-    networks:
-      - app-net
+      PORT: 3000
+  # user-service:
+  #   build:
+  #     context: ./user-service
+  #     dockerfile: Dockerfile.prod
+  #     target: ${STAGE:-testing}
+  #   volumes:
+  #     - ./user-service:/home/node/app
+  #     - /home/node/app/dist
+  #     - /home/node/app/node_modules
+  #   ports:
+  #     - '8080:8080'
+  #   environment:
+  #     PORT: 8080 
+  #     HOST: localhost 
+  #     DB_NAME: user_db 
+  #     DB_HOST: localhost 
+  #     DB_PORT: 5432 
+  #     DB_USERNAME: docker 
+  #     DB_PASSWORD: docker 
+  #   depends_on:
+  #     - postgres
+  #   networks:
+  #     - app-net
+  # postgres_user:
+  #   image: 'bitnami/postgresql'
+  #   restart: always
+  #   ports:
+  #     - '5432:5432'
+  #   environment:
+  #     - POSTGRESQL_USERNAME=docker
+  #     - POSTGRESQL_PASSWORD=docker
+  #     - POSTGRESQL_DATABASE=user_db
+  #   volumes:
+  #     - 'postgresql_data:/bitnami/postgresql'
+  #   networks:
+  #     - app-net
       
-networks:
-  app-net:
-    driver: bridge
+# networks:
+#   app-net:
+#     driver: bridge
 
-volumes:
-  postgresql_data:
-    driver: local
+# volumes:
+#   postgresql_data:
+#     driver: local
